@@ -8,16 +8,20 @@ function App() {
   const [notes, setNotes] = useState([]);
 
   function addNote(newNote) {
-    setNotes(prevNotes => {
-      return [...prevNotes, newNote];
-    });
+    setNotes((prevNotes) => [...prevNotes, newNote]);
   }
 
   function deleteNote(id) {
-    setNotes(prevNotes => {
-      return prevNotes.filter((noteItem, index) => {
-        return index !== id;
-      });
+    setNotes((prevNotes) =>
+      prevNotes.filter((noteItem, index) => index !== id)
+    );
+  }
+
+  function changeNote(id, updatedNote) {
+    setNotes((prevNotes) => {
+      const updatedNotes = [...prevNotes];
+      updatedNotes[id] = updatedNote; // Update the specific note
+      return updatedNotes;
     });
   }
 
@@ -25,20 +29,20 @@ function App() {
     <div>
       <Header />
       <CreateArea onAdd={addNote} />
-      {notes.map((noteItem, index) => {
-        return (
-          <Note
-            key={index}
-            id={index}
-            title={noteItem.title}
-            content={noteItem.content}
-            onDelete={deleteNote}
-          />
-        );
-      })}
+      {notes.map((noteItem, index) => (
+        <Note
+          key={index} // Consider using unique IDs if available
+          id={index}
+          title={noteItem.title}
+          content={noteItem.content}
+          onDelete={deleteNote}
+          onChange={changeNote}
+        />
+      ))}
       <Footer />
     </div>
   );
 }
 
 export default App;
+
